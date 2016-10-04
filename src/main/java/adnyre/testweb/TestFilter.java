@@ -12,6 +12,7 @@ import java.util.*;
 @WebFilter("/test")
 public class TestFilter implements Filter  {
     public void  init(FilterConfig config){
+        System.out.println("Initializing TestFilter");
     }
     public void  doFilter(ServletRequest request,
                           ServletResponse response,
@@ -22,6 +23,6 @@ public class TestFilter implements Filter  {
         chain.doFilter(request,response);
     }
     public void destroy( ){
-      //?
+        System.out.println("Destroying TestFilter");
     }
 }
