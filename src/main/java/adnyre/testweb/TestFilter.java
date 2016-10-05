@@ -9,7 +9,7 @@ import java.util.*;
 /**
  * Created by andrii.novikov on 04.10.2016.
  */
-@WebFilter("/test")
+@WebFilter(urlPatterns="/test/*")
 public class TestFilter implements Filter  {
     public void  init(FilterConfig config){
         System.out.println("Initializing TestFilter");
@@ -20,6 +20,7 @@ public class TestFilter implements Filter  {
             throws java.io.IOException, ServletException {
         String userAgent = ((HttpServletRequest) request).getHeader("User-Agent");
         System.out.println("User-Agent: " + userAgent);
+        response.getWriter().write("Output from TestFilter<br>");
         chain.doFilter(request,response);
     }
     public void destroy( ){
