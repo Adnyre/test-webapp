@@ -39,7 +39,7 @@ public class DBAccessServlet extends HttpServlet {
                 response.getWriter().write("</tr>");
             }
             response.getWriter().write("</table>");
-        } catch (ClassNotFoundException|SQLException e) {
+        } catch (SQLException e) {
             System.err.println(e);
         }
     }
