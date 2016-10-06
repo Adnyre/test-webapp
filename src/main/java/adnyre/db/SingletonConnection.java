@@ -11,7 +11,7 @@ public class SingletonConnection {
     private static String pswd = "pka1x010P";
 
     private volatile static Connection con;
-    public static Connection getConnection() {
+    public static Connection getConnection() throws SQLException {
         if (con == null) {
             synchronized (SingletonConnection.class) {
                 if (con == null) {
@@ -19,15 +19,7 @@ public class SingletonConnection {
                         Class.forName("org.postgresql.Driver");
                         con = DriverManager.getConnection(
                                 url, userName, pswd);
-                    } catch (ClassNotFoundException|SQLException e) {
-                        if (con != null) {
-                            try {
-                                con.close();
-                            } catch (SQLException e2) {
-                                e2.initCause(e);
-                                throw new RuntimeException(e2);
-                            }
-                        }
+                    } catch (ClassNotFoundException e) {
                         throw new RuntimeException(e);
                     }
                 }

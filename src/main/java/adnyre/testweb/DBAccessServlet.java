@@ -25,8 +25,9 @@ public class DBAccessServlet extends HttpServlet {
         response.setContentType("text/html");
         String query =
                 "select id as user_id, first_name as fn, last_name as ln from \"user\"";
-        Connection con = SingletonConnection.getConnection();
-        try (Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+
+        try (Connection con = SingletonConnection.getConnection(); Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(query)) {
             response.getWriter().write("<table border=1><tr><th>id</th><th>fist name</th><th>last name</th></tr>");
             while (rs.next()) {
                 response.getWriter().write("<tr>");
@@ -39,7 +40,7 @@ public class DBAccessServlet extends HttpServlet {
             }
             response.getWriter().write("</table>");
         } catch (SQLException e) {
-            System.err.println(e);
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         } finally {
             SingletonConnection.close();
         }

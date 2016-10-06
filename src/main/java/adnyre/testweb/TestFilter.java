@@ -18,6 +18,7 @@ public class TestFilter implements Filter  {
                           ServletResponse response,
                           FilterChain chain)
             throws java.io.IOException, ServletException {
+        response.setContentType("text/html");
         String userAgent = ((HttpServletRequest) request).getHeader("User-Agent");
         System.out.println("User-Agent: " + userAgent);
         response.getWriter().write("Output from TestFilter<br>");
