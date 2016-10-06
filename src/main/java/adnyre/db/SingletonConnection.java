@@ -1,11 +1,10 @@
 package adnyre.db;
 
 import java.sql.*;
+import java.io.*;
+import java.util.Properties;
 
 public class SingletonConnection {
-    private static final String URL = "jdbc:postgresql://localhost:5432/test_db";
-    private static final String USER_NAME = "postgres";
-    private static final String PASSWORD = "pka1x010P";
 
     private static SingletonConnection instance;
 
@@ -14,8 +13,12 @@ public class SingletonConnection {
     private SingletonConnection() {
         try {
             Class.forName("org.postgresql.Driver");
-            con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-        } catch (ClassNotFoundException e) {
+            InputStream is = SingletonConnection.class.getClassLoader().getResourceAsStream("db/db_credentials.properties");
+            Properties props = new Properties();
+            props.load(is);
+            con = DriverManager.getConnection(props.getProperty("url"), props.getProperty("user_name"),
+                    props.getProperty("password"));
+        } catch (ClassNotFoundException|IOException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {
             e.printStackTrace();
