@@ -1,6 +1,6 @@
 package adnyre.testweb;
 
-import adnyre.db.DBHandler;
+import adnyre.db.SingletonConnection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,12 +22,11 @@ public class DBAccessServlet extends HttpServlet {
     protected void doGet( HttpServletRequest request,
                           HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            Connection con = DBHandler.getConnection();
-            String query =
-                    "select id as user_id, first_name as fn, last_name as ln from \"user\"";
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+        response.setContentType("text/html");
+        String query =
+                "select id as user_id, first_name as fn, last_name as ln from \"user\"";
+        Connection con = SingletonConnection.getConnection();
+        try (Statement stmt = con.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             response.getWriter().write("<table border=1><tr><th>id</th><th>fist name</th><th>last name</th></tr>");
             while (rs.next()) {
                 response.getWriter().write("<tr>");
@@ -41,6 +40,8 @@ public class DBAccessServlet extends HttpServlet {
             response.getWriter().write("</table>");
         } catch (SQLException e) {
             System.err.println(e);
+        } finally {
+            SingletonConnection.close();
         }
     }
 }
