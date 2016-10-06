@@ -9,5 +9,7 @@
 <a href="test/testB">Link to servlet B</a>
 <br>
 <a href="test/testDB">Link to DBServlet</a>
+<br>
+<a href="user">User information</a>
 </body>
 </html>

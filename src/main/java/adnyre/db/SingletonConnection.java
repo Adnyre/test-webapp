@@ -13,7 +13,8 @@ public class SingletonConnection {
     private SingletonConnection() {
         try {
             Class.forName("org.postgresql.Driver");
-            InputStream is = SingletonConnection.class.getClassLoader().getResourceAsStream("db/db_credentials.properties");
+            InputStream is = SingletonConnection.class.getClassLoader().getResourceAsStream("db" + File.separator
+                    + "db_credentials.properties");
             Properties props = new Properties();
             props.load(is);
             con = DriverManager.getConnection(props.getProperty("url"), props.getProperty("user_name"),
