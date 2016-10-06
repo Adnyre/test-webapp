@@ -19,19 +19,20 @@ import java.sql.Statement;
 @WebServlet("/test/testDB")
 public class DBAccessServlet extends HttpServlet {
 
-    protected void doGet( HttpServletRequest request,
-                          HttpServletResponse response)
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
         String query =
-                "select id as user_id, first_name as fn, last_name as ln from \"user\"";
+                "SELECT id, first_name AS fn, last_name AS ln FROM user_tbl";
+        Connection con = SingletonConnection.getInstance().getCon();
 
-        try (Connection con = SingletonConnection.getConnection(); Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery(query)) {
+        try (Statement stmt = con.createStatement()) {
+            ResultSet rs = stmt.executeQuery(query);
             response.getWriter().write("<table border=1><tr><th>id</th><th>fist name</th><th>last name</th></tr>");
             while (rs.next()) {
                 response.getWriter().write("<tr>");
-                int userID = rs.getInt("user_id");
+                int userID = rs.getInt("id");
                 String firstName = rs.getString("fn");
                 String lastName = rs.getString("ln");
                 response.getWriter().write("<td>" + userID + "</td><td>" + firstName + "</td><td>" +
@@ -41,8 +42,6 @@ public class DBAccessServlet extends HttpServlet {
             response.getWriter().write("</table>");
         } catch (SQLException e) {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        } finally {
-            SingletonConnection.close();
         }
     }
 }

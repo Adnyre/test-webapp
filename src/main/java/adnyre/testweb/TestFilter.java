@@ -1,10 +1,8 @@
 package adnyre.testweb;
 
-import java.io.*;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.*;
-import java.util.*;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by andrii.novikov on 04.10.2016.
@@ -21,7 +19,6 @@ public class TestFilter implements Filter  {
         response.setContentType("text/html");
         String userAgent = ((HttpServletRequest) request).getHeader("User-Agent");
         System.out.println("User-Agent: " + userAgent);
-        response.getWriter().write("Output from TestFilter<br>");
         chain.doFilter(request,response);
     }
     public void destroy( ){

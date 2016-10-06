@@ -2,39 +2,54 @@ package adnyre.db;
 
 import java.sql.*;
 
-/**
- * Created by andrii.novikov on 05.10.2016.
- */
 public class SingletonConnection {
-    private static String url = "jdbc:postgresql://localhost:5432/test_db";
-    private static String userName = "postgres";
-    private static String pswd = "pka1x010P";
+    private static final String URL = "jdbc:postgresql://localhost:5432/test_db";
+    private static final String USER_NAME = "postgres";
+    private static final String PASSWORD = "pka1x010P";
 
-    private volatile static Connection con;
-    public static Connection getConnection() throws SQLException {
-        if (con == null) {
+    private static SingletonConnection instance;
+
+    private Connection con;
+
+    private SingletonConnection() {
+        try {
+            Class.forName("org.postgresql.Driver");
+            con = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static SingletonConnection getInstance() {
+        if (instance == null) {
             synchronized (SingletonConnection.class) {
-                if (con == null) {
-                    try {
-                        Class.forName("org.postgresql.Driver");
-                        con = DriverManager.getConnection(
-                                url, userName, pswd);
-                    } catch (ClassNotFoundException e) {
-                        throw new RuntimeException(e);
-                    }
+                if (instance == null) {
+                    instance = new SingletonConnection();
                 }
             }
         }
-        return con;
-     }
+        return instance;
+    }
 
-     public static void close(){
-         if (con != null) {
-             try {
-                 con.close();
-             } catch (SQLException e) {
-                 throw new RuntimeException(e);
-             }
-         }
-     }
+    public Connection getCon() {
+        return con;
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        close();
+    }
+
+    public void close() {
+        if (con != null) {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
 }
