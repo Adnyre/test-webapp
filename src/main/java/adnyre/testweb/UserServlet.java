@@ -2,7 +2,7 @@ package adnyre.testweb;
 
 import adnyre.dao.UserDAOPostgres;
 import adnyre.model.User;
-import adnyre.service.UserAlreadyExistsException;
+import adnyre.exceptions.UserAlreadyExistsException;
 import adnyre.service.UserService;
 import adnyre.service.UserServiceImpl;
 
@@ -49,10 +49,9 @@ public class UserServlet extends HttpServlet {
                           HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
-        int id = Integer.parseInt(request.getParameter("id"));
         String firstName = request.getParameter("first_name");
         String lastName = request.getParameter("last_name");
-        User user = new User(id, firstName, lastName);
+        User user = new User(0, firstName, lastName);
         try {
             service.saveOrUpdateUser(user);
             response.getWriter().write("<h2>Database updated.</h2>");

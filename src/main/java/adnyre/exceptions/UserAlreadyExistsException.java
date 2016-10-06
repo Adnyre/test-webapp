@@ -1,4 +1,4 @@
-package adnyre.service;
+package adnyre.exceptions;
 
 /**
  * Created by andrii.novikov on 06.10.2016.

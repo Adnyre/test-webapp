@@ -1,6 +1,7 @@
 package adnyre.service;
 
 import adnyre.dao.UserDAO;
+import adnyre.exceptions.UserAlreadyExistsException;
 import adnyre.model.User;
 
 import java.sql.SQLException;
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
     public void saveOrUpdateUser(User user) throws UserAlreadyExistsException {
         try {
-            if (getUserById(user.getId()) != null) {
+            if (user.getId() != 0) {
                 dao.updateUser(user);
             } else {
                 if (dao.checkUserExistsByName(user)) {

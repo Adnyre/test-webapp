@@ -1,5 +1,6 @@
 package adnyre.service;
 
+import adnyre.exceptions.UserAlreadyExistsException;
 import adnyre.model.*;
 import java.util.List;
 

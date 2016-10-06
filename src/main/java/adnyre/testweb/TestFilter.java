@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by andrii.novikov on 04.10.2016.
  */
-@WebFilter(urlPatterns="/test/*")
+//@WebFilter(urlPatterns="/test/*")
 public class TestFilter implements Filter  {
     public void  init(FilterConfig config){
         System.out.println("Initializing TestFilter");
