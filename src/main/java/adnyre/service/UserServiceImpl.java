@@ -2,6 +2,7 @@ package adnyre.service;
 
 import adnyre.dao.UserDAO;
 import adnyre.exceptions.UserAlreadyExistsException;
+import adnyre.exceptions.UserNotFoundException;
 import adnyre.model.User;
 
 import java.sql.SQLException;
@@ -18,17 +19,22 @@ public class UserServiceImpl implements UserService {
         this.dao = dao;
     }
 
-    public User getUserById(int id) {
+    public User getUserById(int id) throws UserNotFoundException {
         try {
-            return dao.getUserById(id);
+            User user = dao.getUserById(id);
+            if (user == null)
+                throw new UserNotFoundException();
+            else
+                return user;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public boolean deleteUser(int id) {
+    public void deleteUser(int id) throws UserNotFoundException {
         try {
-            return dao.deleteUser(id);
+            if (!dao.deleteUser(id))
+                throw new UserNotFoundException();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

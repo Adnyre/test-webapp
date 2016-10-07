@@ -1,8 +1,9 @@
 package adnyre.testweb;
 
-import adnyre.dao.UserDAOPostgres;
-import adnyre.model.User;
+import adnyre.dao.UserDAOImpl;
 import adnyre.exceptions.UserAlreadyExistsException;
+import adnyre.exceptions.UserNotFoundException;
+import adnyre.model.User;
 import adnyre.service.UserService;
 import adnyre.service.UserServiceImpl;
 
@@ -21,20 +22,20 @@ import java.util.List;
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
 
-    private UserService service = new UserServiceImpl(new UserDAOPostgres());
+    private UserService service = new UserServiceImpl(new UserDAOImpl());
 
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
         if (request.getParameterMap().size() > 0) {
-            User user = service.getUserById(Integer.parseInt(request.getParameter("id")));
-            if (user != null) {
+            try {
+                User user = service.getUserById(Integer.parseInt(request.getParameter("id")));
                 response.getWriter().write("<h2>Information about the requested user:</h2><br>");
                 response.getWriter().write("First name: " + user.getFirstName() + "<br>");
                 response.getWriter().write("Last name: " + user.getLastName());
-            } else {
-                response.getWriter().write("<h2>No such user.</h2>");
+            } catch (UserNotFoundException e) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "No such user found.");
             }
         } else {
             response.getWriter().write("<h2>Information about all users:</h2><br>");
@@ -65,10 +66,11 @@ public class UserServlet extends HttpServlet {
                             HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
-        if (service.deleteUser(Integer.parseInt(request.getParameter("id")))) {
+        try {
+            service.deleteUser(Integer.parseInt(request.getParameter("id")));
             response.getWriter().write("<h2>User information deleted from the database.</h2>");
-        } else {
-            response.getWriter().write("<h2>No such user.</h2>");
+        } catch (UserNotFoundException e) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "No such user found.");
         }
     }
 }

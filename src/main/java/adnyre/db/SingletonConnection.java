@@ -1,7 +1,11 @@
 package adnyre.db;
 
-import java.sql.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class SingletonConnection {
@@ -19,7 +23,7 @@ public class SingletonConnection {
             props.load(is);
             con = DriverManager.getConnection(props.getProperty("url"), props.getProperty("user_name"),
                     props.getProperty("password"));
-        } catch (ClassNotFoundException|IOException e) {
+        } catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {
             e.printStackTrace();
