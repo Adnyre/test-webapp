@@ -12,7 +12,7 @@ import static org.mockito.Mockito.*;
 
 public class UserServiceTest {
     @Test(expected = UserNotFoundException.class)
-    public void testExpectUserNotFoundExceptionInGetUserById() throws Exception {
+    public void expectUserNotFoundExceptionInGetUserByIdTest() throws Exception {
         //given
         UserDAO mockDao = mock(UserDAO.class);
         UserService instance = new UserServiceImpl();
@@ -25,15 +25,14 @@ public class UserServiceTest {
         try {
             instance.getUserById(0);
         } catch (UserNotFoundException e) {
-            //verify
-            verify(mockDao, times(1)).getUserById(0);
+            verify(mockDao).getUserById(0);
 
             throw e;
         }
     }
 
     @Test(expected = RuntimeException.class)
-    public void testExpectRuntimeExceptionInGetUserById() throws Exception {
+    public void expectRuntimeExceptionInGetUserByIdTest() throws Exception {
         //given
         UserDAO mockDao = mock(UserDAO.class);
         UserService instance = new UserServiceImpl();
@@ -46,15 +45,14 @@ public class UserServiceTest {
         try {
             instance.getUserById(0);
         } catch (RuntimeException e) {
-            //verify
-            verify(mockDao, times(1)).getUserById(0);
+            verify(mockDao).getUserById(0);
 
             throw e;
         }
     }
 
     @Test
-    public void testExpectReturnUserInGetUserById() throws Exception {
+    public void getUserByIdTest() throws Exception {
         //given
         UserDAO mockDao = mock(UserDAO.class);
         User mockUser = mock(User.class);
@@ -67,8 +65,6 @@ public class UserServiceTest {
         //then
         User returned = instance.getUserById(0);
         assertSame(returned, mockUser);
-
-        //verify
-        verify(mockDao, times(1)).getUserById(0);
+        verify(mockDao).getUserById(0);
     }
 }
