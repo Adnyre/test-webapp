@@ -1,6 +1,7 @@
 package adnyre.service;
 
 import adnyre.dao.UserDAO;
+import adnyre.dao.UserDAOImpl;
 import adnyre.exceptions.UserAlreadyExistsException;
 import adnyre.exceptions.UserNotFoundException;
 import adnyre.model.User;
@@ -8,14 +9,16 @@ import adnyre.model.User;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created by andrii.novikov on 06.10.2016.
- */
 public class UserServiceImpl implements UserService {
 
     private UserDAO dao;
 
-    public UserServiceImpl(UserDAO dao) {
+    public UserServiceImpl() {
+        this.dao = new UserDAOImpl();
+    }
+
+
+    public void setUserDao(UserDAO dao) {
         this.dao = dao;
     }
 

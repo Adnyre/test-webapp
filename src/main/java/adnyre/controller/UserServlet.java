@@ -1,6 +1,5 @@
-package adnyre.testweb;
+package adnyre.controller;
 
-import adnyre.dao.UserDAOImpl;
 import adnyre.exceptions.UserAlreadyExistsException;
 import adnyre.exceptions.UserNotFoundException;
 import adnyre.model.User;
@@ -15,22 +14,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-
-/**
- * Created by andrii.novikov on 06.10.2016.
- */
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
 
-    private UserService service = new UserServiceImpl(new UserDAOImpl());
+    private UserService service = new UserServiceImpl();
 
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html");
-        if (request.getParameterMap().size() > 0) {
+        String id = request.getParameter("id");
+        if (id != null && !id.isEmpty()) {
             try {
-                User user = service.getUserById(Integer.parseInt(request.getParameter("id")));
+                User user = service.getUserById(Integer.parseInt(id));
                 response.getWriter().write("<h2>Information about the requested user:</h2><br>");
                 response.getWriter().write("First name: " + user.getFirstName() + "<br>");
                 response.getWriter().write("Last name: " + user.getLastName());
@@ -52,7 +48,9 @@ public class UserServlet extends HttpServlet {
         response.setContentType("text/html");
         String firstName = request.getParameter("first_name");
         String lastName = request.getParameter("last_name");
-        User user = new User(0, firstName, lastName);
+        String idStr = request.getParameter("id");
+        int id = (idStr != null && !idStr.isEmpty()) ? Integer.valueOf(idStr) : 0;
+        User user = new User(id, firstName, lastName);
         try {
             service.saveOrUpdateUser(user);
             response.getWriter().write("<h2>Database updated.</h2>");

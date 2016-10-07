@@ -1,20 +1,21 @@
 package adnyre.service;
 
+import adnyre.dao.UserDAO;
 import adnyre.exceptions.UserAlreadyExistsException;
 import adnyre.exceptions.UserNotFoundException;
 import adnyre.model.User;
 
 import java.util.List;
 
-/**
- * Created by andrii.novikov on 06.10.2016.
- */
 public interface UserService {
-    public User getUserById(int id) throws UserNotFoundException;
 
-    public void deleteUser(int id) throws UserNotFoundException;
+    void setUserDao(UserDAO dao);
 
-    public List<User> getAllUsers();
+    User getUserById(int id) throws UserNotFoundException;
 
-    public void saveOrUpdateUser(User user) throws UserAlreadyExistsException;
+    void deleteUser(int id) throws UserNotFoundException;
+
+    List<User> getAllUsers();
+
+    void saveOrUpdateUser(User user) throws UserAlreadyExistsException;
 }

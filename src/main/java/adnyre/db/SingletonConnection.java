@@ -16,13 +16,13 @@ public class SingletonConnection {
 
     private SingletonConnection() {
         try {
-            Class.forName("org.postgresql.Driver");
+            Properties props = new Properties();
             InputStream is = SingletonConnection.class.getClassLoader().getResourceAsStream("db" + File.separator
                     + "db_credentials.properties");
-            Properties props = new Properties();
             props.load(is);
-            con = DriverManager.getConnection(props.getProperty("url"), props.getProperty("user_name"),
-                    props.getProperty("password"));
+            Class.forName(props.getProperty("db.driver"));
+            con = DriverManager.getConnection(props.getProperty("db.url"), props.getProperty("db.user_name"),
+                    props.getProperty("db.password"));
         } catch (ClassNotFoundException | IOException e) {
             throw new RuntimeException(e);
         } catch (SQLException e) {

@@ -5,9 +5,6 @@ import adnyre.model.User;
 import java.sql.SQLException;
 import java.util.List;
 
-/**
- * Created by andrii.novikov on 06.10.2016.
- */
 public interface UserDAO {
     User getUserById(int id) throws SQLException;
 

@@ -3,24 +3,17 @@ package adnyre.dao;
 import adnyre.db.SingletonConnection;
 import adnyre.model.User;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by andrii.novikov on 06.10.2016.
- */
 public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getUserById(int id) throws SQLException {
-        String query =
-                String.format("SELECT first_name AS fn, last_name AS ln FROM user_tbl WHERE id = %s", id);
-        Connection con = SingletonConnection.getInstance().getCon();
-        Statement stmt = con.createStatement();
+        String query = "SELECT first_name AS fn, last_name AS ln FROM user_tbl WHERE id = ?";
+        PreparedStatement stmt = SingletonConnection.getInstance().getCon().prepareStatement(query);
+        stmt.setInt(1, id);
         ResultSet rs = stmt.executeQuery(query);
         if (rs.next()) {
             String firstName = rs.getString("fn");
@@ -73,7 +66,7 @@ public class UserDAOImpl implements UserDAO {
         String fn = user.getFirstName();
         String ln = user.getLastName();
         String query =
-                String.format("UPDATE user_tbl first_name='%s', last_name='%s' WHERE id=%d", fn, ln, userId);
+                String.format("UPDATE user_tbl SET first_name='%s', last_name='%s' WHERE id=%d", fn, ln, userId);
         Connection con = SingletonConnection.getInstance().getCon();
         Statement stmt = con.createStatement();
         return stmt.executeUpdate(query) > 0;
@@ -86,11 +79,6 @@ public class UserDAOImpl implements UserDAO {
                         user.getLastName());
         Connection con = SingletonConnection.getInstance().getCon();
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery(query);
-        return rs.next();
-    }
-
-    public static void main(String[] args) throws SQLException {
-        UserDAO dao = new UserDAOImpl();
+        return stmt.executeQuery(query).next();
     }
 }

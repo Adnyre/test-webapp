@@ -1,12 +1,10 @@
-package adnyre.testweb;
+package adnyre.filter;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Created by andrii.novikov on 04.10.2016.
- */
-//@WebFilter(urlPatterns="/test/*")
+@WebFilter(urlPatterns = "/")
 public class TestFilter implements Filter {
     public void init(FilterConfig config) {
         System.out.println("Initializing TestFilter");
