@@ -1,1 +1,1 @@
-insert into user_tbl (first_name, last_name) values ('Andrii', 'Novikov'),('Taras', 'Martsyniak');
+INSERT INTO user_tbl (first_name, last_name) VALUES ('Andrii', 'Novikov'), ('Taras', 'Martsyniak');

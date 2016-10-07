@@ -1,2 +1,6 @@
-create table user_tbl (id serial primary key, first_name character varying(20), last_name character varying(20));
+CREATE TABLE user_tbl (
+  id         SERIAL PRIMARY KEY,
+  first_name CHARACTER VARYING(20),
+  last_name  CHARACTER VARYING(20)
+);
 

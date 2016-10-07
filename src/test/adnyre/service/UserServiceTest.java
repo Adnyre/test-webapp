@@ -26,7 +26,7 @@ public class UserServiceTest {
             instance.getUserById(0);
         } catch (UserNotFoundException e) {
             //verify
-            verify(mockDao).getUserById(0);
+            verify(mockDao, times(1)).getUserById(0);
 
             throw e;
         }
@@ -47,7 +47,7 @@ public class UserServiceTest {
             instance.getUserById(0);
         } catch (RuntimeException e) {
             //verify
-            verify(mockDao).getUserById(0);
+            verify(mockDao, times(1)).getUserById(0);
 
             throw e;
         }
@@ -69,6 +69,6 @@ public class UserServiceTest {
         assertSame(returned, mockUser);
 
         //verify
-        verify(mockDao).getUserById(0);
+        verify(mockDao, times(1)).getUserById(0);
     }
 }
